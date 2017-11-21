@@ -1,0 +1,23 @@
+### Install Apache in Machine ###
+
+- hosts: apache
+  sudo: true
+  tasks:
+    - name: run echo command
+      command: /bin/echo hello JP ### Run Sample Echo Command ###
+
+    - name: Sample install
+      apt: name=whois update_cache=true state=latest
+
+    - name: install apache2
+      apt: name=apache2 update_cache=true state=latest
+
+    - name: enabled mod_rewrite
+      apache2_module: name=rewrite state=present
+      notify:
+        - restart apache2
+  
+  handlers:
+    - name: restart apache2
+      service: name=apache2 state=restarted
+      
