@@ -1,0 +1,18 @@
+- hosts: test
+  sudo: true
+  vars: 
+    - MyMessage: "Welcome to Ansible"
+  tasks:
+    - name: Nginx Setup
+      apt: name=nginx state=installed update_cache=true      
+    
+    - name: Index Copy
+      template: src=index.html.j2 dest=/usr/share/nginx/html/index.html      
+
+    - name: stop apache2
+      become: true
+      service: name=apache2 state=stopped
+
+    - name: restart nginx
+      become: true
+      service: name=nginx state=restarted
